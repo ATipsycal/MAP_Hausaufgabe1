@@ -5,6 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+
+// Disclaimer: while the spec sheet technically says that the methods take books as input
+// I think an interpretation off this could be a book list that you can do operations on,
+// not that each method has to take in separate book lists, as that would be tedious for the
+// user to repeat for each operation.
+// Thus, I chose a common book list shared across the Library class for all implementations.
+// I won't change this unless otherwise specified, I think it's a logical implementation.
+// At most, I'll add a way to select books from the list.
+
 public class Library {
     List<Book> bookList = new ArrayList<>();
     public void newBook(String title, String author, float price, int numberOfPages)
@@ -33,10 +42,10 @@ public class Library {
 
         while(continueAddingBooks)
         {
-            System.out.println("Gibt ein Buchtitel ein: ");
+            System.out.print("Gibt ein Buchtitel ein: ");
             bookTitleList.add(reader.readLine());
 
-            System.out.println("Moechten Sie ein anderes Buch eingeben? (y/n)");
+            System.out.print("Moechten Sie ein anderes Buch eingeben? (y/n): ");
             continueOption = reader.readLine();
 
             switch (continueOption)
@@ -93,7 +102,7 @@ public class Library {
     public Book mostExpensiveBook() throws IOException {
         Book mostExpensiveBook = null;
         List<String> bookTitleList = readBookTitleInputs();
-        float maxPrice = bookList.getFirst().getPrice();
+        float maxPrice = -1;
         for(Book book : bookList)
         {
             for(String title : bookTitleList)
@@ -121,16 +130,24 @@ public class Library {
     public List<Book> mostExpensiveBookCombinationWithinSetPrice(float budget)
     {
         List<Book> selectedBookPair = new ArrayList<>();
-        float maxPrice = bookList.get(0).getPrice() + bookList.get(1).getPrice();
+        float maxPrice = -1;
         for(Book book1 : bookList)
         {
             for(Book book2 : bookList)
             {
-                if(!Objects.equals(book1, book2) && book1.getPrice() + book2.getPrice() <= budget && book1.getPrice() + book2.getPrice() > maxPrice)
+                if(!Objects.equals(book1, book2) && book1.getPrice() + book2.getPrice() <= budget && book1.getPrice() + book2.getPrice() >= maxPrice)
                 {
-                    selectedBookPair.set(0, book1);
-                    selectedBookPair.set(1, book2);
+                    if(book1.getPrice() + book2.getPrice() > maxPrice){
+                    selectedBookPair.add(0, book1);
+                    selectedBookPair.add(1, book2);
                     maxPrice = book1.getPrice() + book2.getPrice();
+                    }
+                    else if(book1.getNumberOfPages() + book2.getNumberOfPages() > selectedBookPair.get(0).getNumberOfPages() + selectedBookPair.get(1).getNumberOfPages())
+                    {
+                        selectedBookPair.set(0, book1);
+                        selectedBookPair.set(1, book2);
+                        maxPrice = book1.getPrice() + book2.getPrice();
+                    }
                 }
             }
         }
