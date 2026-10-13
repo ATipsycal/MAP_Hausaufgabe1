@@ -1,10 +1,10 @@
 public class Book {
-    private final String title, autor;
+    private final String title, author;
     private final float price;
     private final int numberOfPages;
-    public Book(String title, String autor, float price, int numberOfPages) {
+    public Book(String title, String author, float price, int numberOfPages) {
         this.title = title;
-        this.autor = autor;
+        this.author = author;
         this.price = price;
         this.numberOfPages = numberOfPages;
     }
@@ -13,8 +13,8 @@ public class Book {
         return title;
     }
 
-    public String getAutor() {
-        return autor;
+    public String getAuthor() {
+        return author;
     }
 
     public float getPrice() {
